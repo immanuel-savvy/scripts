@@ -1,5 +1,5 @@
-import os, time
-
+import os, time, sys
+print(sys.argv)
 
 curr_folder_name = os.getcwd().split('/')[-1].strip()
 
@@ -24,9 +24,14 @@ def compile_files(folder=None):
   
 compile_files()
 
-os.system('npm publish')
-os.chdir('..')
-os.system('rm -rf ./%s'%curr_folder_name)
-os.system('unzip %s.zip'%curr_folder_name)
-os.chdir('./%s'%curr_folder_name)
-os.system('python3 ~/Develop/scripts/gitcode.py')
+if not sys.argv.count('--no-publish'):
+  os.system('npm publish')
+  os.chdir('..')
+  os.system('zip -r ../%s-compiled.zip ../%s'%(curr_folder_name, curr_folder_name))
+  os.system('unzip %s.zip'%curr_folder_name)
+  os.chdir('./%s'%curr_folder_name)
+  os.system('python3 ~/Develop/scripts/gitcode.py')
+else:
+  pass
+  
+
